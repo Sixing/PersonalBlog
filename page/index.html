@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>个人博客</title>
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+  <canvas id="canvas" class="canvas" width="1440" height="900"></canvas>
+  <header class="header">
+    <div class="container">
+      <a href="#" class="title">我的个人博客 | 技术博客</a>
+      <ul class="menu">
+        <li><a href="#">首页</a></li>
+        <li><a href="/sitemap.html">地图</a></li>
+        <li><a href="#">关于</a></li>
+        <li><a href="#">留言</a></li>
+      </ul>
+      <div class="search-bar">
+        <input type="text" placeholder="输入关键词查找">
+        <button>搜索</button>
+      </div>
+    </div>
+  </header>
+  <section class="content">
+    <div class="content-left">
+      <div class="every-day">
+        <span>每日一句</span>
+        <p>asdfasdfasdfasdfasdf</p>
+      </div>
+      <div class="article-list">
+        <div class="article">
+          <a href="#" class="article-title">母猪护理与原子弹</a>
+          <p class="article-content">阿斯顿发送到发送到发是都发烧的发送到发送到发送到发放</p>
+          <div class="article-footer">发布于2019-11-12 | 浏览 (666) | Tags: 母猪的产后护理 原子弹制造与维修</div>
+        </div>
+      </div>
+    </div>
+    <div class="content-right">
+      <div class="right_module">
+        <div class="">随机标签云</div>
+        <a href="#">javascript</a>
+        <a href="#">nodejs</a>
+        <a href="#">sql</a>
+        <a href="#">java</a>
+        <a href="#">html</a>
+      </div>
+      <div class="right_module">
+        <div class="">最近热门</div>
+        <ul>
+          <li><a href="#">你今天剁手了吗？</a></li>
+          <li><a href="#">你今天剁手了吗？</a></li>
+          <li><a href="#">你今天剁手了吗？</a></li>
+          <li><a href="#">你今天剁手了吗？</a></li>
+          <li><a href="#">你今天剁手了吗？</a></li>
+          <li><a href="#">你今天剁手了吗？</a></li>
+        </ul>
+      </div>
+      <div class="right_module">
+        <div class="">最近评论</div>
+        <ul>
+          <li>
+            <div>
+              <span>这是用户名</span>
+              <span class="pull-right">这是时间</span>
+            </div>
+            <p>抱歉，由于您的智商不够，为了世界和平，不能放走您</p>
+          </li>
+          <li>
+            <div>
+              <span>这是用户名</span>
+              <span class="pull-right">这是时间</span>
+            </div>
+            <p>抱歉，由于您的智商不够，为了世界和平，不能放走您</p>
+          </li>
+          <li>
+            <div>
+              <span>这是用户名</span>
+              <span class="pull-right">这是时间</span>
+            </div>
+            <p>抱歉，由于您的智商不够，为了世界和平，不能放走您</p>
+          </li>
+        </ul>
+      </div>
+      <div class="right_module">
+        <div class="">友情链接</div>
+        <span><a href="#">挨踢茶馆</a></span>
+        <span><a href="#">挨踢茶馆</a></span>
+        <span><a href="#">挨踢茶馆</a></span>
+        <span><a href="#">挨踢茶馆</a></span>
+        <span><a href="#">挨踢茶馆</a></span>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <ul>
+      <li>C/C++</li>
+      <li>HTML5</li>
+      <li>CSS3</li>
+      <li>javascript</li>
+      <li>Vue</li>
+      <li>React</li>
+      <li>C/C++</li>
+      <li>C/C++</li>
+      <li>C/C++</li>
+      <li>C/C++</li>
+    </ul>
+    <p>Copyright © 2019</p>
+  </footer>
+</body>
+<script>
+  var canvas = document.getElementById("canvas");
+  var cxt = canvas.getContext("2d");
+
+  function Dot() {
+    this.alive = true;
+    this.x = Math.round(Math.random() * canvas.width);
+    this.y = Math.round(Math.random() * canvas.height);
+    this.diameter = Math.random() * 10.8;
+    this.ColorData = {
+      Red: Math.round(Math.random() * 255),
+      Green: Math.round(Math.random() * 255),
+      Blue: Math.round(Math.random() * 255)
+    };
+    this.alpha = 0.1;
+    this.color = "rgba(" + this.ColorData.Red + ", " + this.ColorData.Green + "," + this.ColorData.Blue + "," + this
+      .alpha + ")";
+    this.velocity = {
+      x: Math.round(Math.random() < 0.5 ? -1 : 1) * Math.random() * 0.7,
+      y: Math.round(Math.random() < 0.5 ? -1 : 1) * Math.random() * 0.7
+    }
+  }
+  Dot.prototype = {
+    Draw: function () {
+      cxt.fillStyle = this.color;
+      cxt.beginPath();
+      cxt.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, false);
+      cxt.fill()
+    },
+    Update: function () {
+      if (this.alpha < 0.8) {
+        this.alpha += 0.01;
+        this.color = "rgba(" + this.ColorData.Red + ", " + this.ColorData.Green + "," + this.ColorData.Blue + "," +
+          this.alpha + ")"
+      }
+      this.x += this.velocity.x;
+      this.y += this.velocity.y;
+      if (this.x > canvas.width + 5 || this.x < 0 - 5 || this.y > canvas.height + 5 || this.y < 0 - 5) {
+        this.alive = false
+      }
+    }
+  };
+  var Event = {
+    rArray: [],
+    Init: function () {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      for (var x = 0; x < 150; x++) {
+        this.rArray.push(new Dot())
+      }
+      this.Update()
+    },
+    Draw: function () {
+      cxt.clearRect(0, 0, canvas.width, canvas.height);
+      this.rArray.forEach(function (dot) {
+        dot.Draw()
+      })
+    },
+    Update: function () {
+      if (Event.rArray.length < 150) {
+        for (var x = Event.rArray.length; x < 150; x++) {
+          Event.rArray.push(new Dot())
+        }
+      }
+      Event.rArray.forEach(function (dot) {
+        dot.Update()
+      });
+      Event.rArray = Event.rArray.filter(function (dot) {
+        return dot.alive
+      });
+      Event.Draw();
+      requestAnimationFrame(Event.Update)
+    }
+  };
+  window.onresize = function () {
+    Event.rArray = [];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight
+  };
+  Event.Init();
+</script>
+
+</html>

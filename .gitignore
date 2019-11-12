@@ -1,0 +1,8 @@
+# gitignore
+node_modules
+.vscode
+dist
+.idea
+
+#macOS file
+**/.DS_Store

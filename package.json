@@ -1,0 +1,24 @@
+{
+  "name": "personalblog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sixing/PersonalBlog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sixing/PersonalBlog/issues"
+  },
+  "homepage": "https://github.com/Sixing/PersonalBlog#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "url": "^0.11.0"
+  }
+}
