@@ -29,61 +29,40 @@
   </header>
   <section class="content">
     <div class="content-left">
-      <div class="every-day">
+      <div id="every-day" class="every-day">
         <span>每日一句</span>
-        <p>asdfasdfasdfasdfasdf</p>
+        <p v-html="getContent"></p>
       </div>
-      <div class="article-list">
-        <div class="article">
-          <a href="#" class="article-title">母猪护理与原子弹</a>
-          <p class="article-content">阿斯顿发送到发送到发是都发烧的发送到发送到发送到发放</p>
-          <div class="article-footer">发布于2019-11-12 | 浏览 (666) | Tags: 母猪的产后护理 原子弹制造与维修</div>
+      <div id="article-list" class="article-list">
+        <div class="article" v-for="article in articleList" :key="article.id">
+          <a v-bind:href="article.link" class="article-title">{{article.title}}</a>
+          <p class="article-content">{{article.content}}</p>
+          <div class="article-footer">发布于{{article.date}} | 浏览 ({{article.view}}) | Tags: {{article.tags}}</div>
         </div>
       </div>
     </div>
     <div class="content-right">
-      <div class="right_module">
+      <div id="random_tags" class="right_module">
         <div class="">随机标签云</div>
-        <a href="#">javascript</a>
-        <a href="#">nodejs</a>
-        <a href="#">sql</a>
-        <a href="#">java</a>
-        <a href="#">html</a>
+        <a href="#" v-bind:style="{color:randomColor() , fontSize:randomSize()}" v-for="(tag, index) in tags" :key="index">{{tag}}</a>
       </div>
-      <div class="right_module">
+      <div class="right_module" id="new-hot">
         <div class="">最近热门</div>
         <ul>
-          <li><a href="#">你今天剁手了吗？</a></li>
-          <li><a href="#">你今天剁手了吗？</a></li>
-          <li><a href="#">你今天剁手了吗？</a></li>
-          <li><a href="#">你今天剁手了吗？</a></li>
-          <li><a href="#">你今天剁手了吗？</a></li>
-          <li><a href="#">你今天剁手了吗？</a></li>
+          <li v-for="(item, index) in titleList" :key="index">
+            <a v-bind:href="item.link">{{item.title}}</a>
+          </li>
         </ul>
       </div>
-      <div class="right_module">
+      <div class="right_module" id="new-comment">
         <div class="">最近评论</div>
         <ul>
-          <li>
+          <li v-for="(comment, index) in commentList" :key="index">
             <div>
-              <span>这是用户名</span>
-              <span class="pull-right">这是时间</span>
+              <span>{{comment.name}}</span>
+              <span class="pull-right">{{comment.date}}</span>
             </div>
-            <p>抱歉，由于您的智商不够，为了世界和平，不能放走您</p>
-          </li>
-          <li>
-            <div>
-              <span>这是用户名</span>
-              <span class="pull-right">这是时间</span>
-            </div>
-            <p>抱歉，由于您的智商不够，为了世界和平，不能放走您</p>
-          </li>
-          <li>
-            <div>
-              <span>这是用户名</span>
-              <span class="pull-right">这是时间</span>
-            </div>
-            <p>抱歉，由于您的智商不够，为了世界和平，不能放走您</p>
+            <p>{{comment.comment}}</p>
           </li>
         </ul>
       </div>
@@ -113,86 +92,92 @@
     <p>Copyright © 2019</p>
   </footer>
 </body>
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+<script src="./index.js"></script>
+<script src="./base.js"></script>
 <script>
-  var canvas = document.getElementById("canvas");
-  var cxt = canvas.getContext("2d");
+  (function() {
+    var canvas = document.getElementById("canvas");
+    var cxt = canvas.getContext("2d");
 
-  function Dot() {
-    this.alive = true;
-    this.x = Math.round(Math.random() * canvas.width);
-    this.y = Math.round(Math.random() * canvas.height);
-    this.diameter = Math.random() * 10.8;
-    this.ColorData = {
-      Red: Math.round(Math.random() * 255),
-      Green: Math.round(Math.random() * 255),
-      Blue: Math.round(Math.random() * 255)
-    };
-    this.alpha = 0.1;
-    this.color = "rgba(" + this.ColorData.Red + ", " + this.ColorData.Green + "," + this.ColorData.Blue + "," + this
-      .alpha + ")";
-    this.velocity = {
-      x: Math.round(Math.random() < 0.5 ? -1 : 1) * Math.random() * 0.7,
-      y: Math.round(Math.random() < 0.5 ? -1 : 1) * Math.random() * 0.7
-    }
-  }
-  Dot.prototype = {
-    Draw: function () {
-      cxt.fillStyle = this.color;
-      cxt.beginPath();
-      cxt.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, false);
-      cxt.fill()
-    },
-    Update: function () {
-      if (this.alpha < 0.8) {
-        this.alpha += 0.01;
-        this.color = "rgba(" + this.ColorData.Red + ", " + this.ColorData.Green + "," + this.ColorData.Blue + "," +
-          this.alpha + ")"
-      }
-      this.x += this.velocity.x;
-      this.y += this.velocity.y;
-      if (this.x > canvas.width + 5 || this.x < 0 - 5 || this.y > canvas.height + 5 || this.y < 0 - 5) {
-        this.alive = false
+    function Dot() {
+      this.alive = true;
+      this.x = Math.round(Math.random() * canvas.width);
+      this.y = Math.round(Math.random() * canvas.height);
+      this.diameter = Math.random() * 10.8;
+      this.ColorData = {
+        Red: Math.round(Math.random() * 255),
+        Green: Math.round(Math.random() * 255),
+        Blue: Math.round(Math.random() * 255)
+      };
+      this.alpha = 0.1;
+      this.color = "rgba(" + this.ColorData.Red + ", " + this.ColorData.Green + "," + this.ColorData.Blue + "," + this
+        .alpha + ")";
+      this.velocity = {
+        x: Math.round(Math.random() < 0.5 ? -1 : 1) * Math.random() * 0.7,
+        y: Math.round(Math.random() < 0.5 ? -1 : 1) * Math.random() * 0.7
       }
     }
-  };
-  var Event = {
-    rArray: [],
-    Init: function () {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      for (var x = 0; x < 150; x++) {
-        this.rArray.push(new Dot())
-      }
-      this.Update()
-    },
-    Draw: function () {
-      cxt.clearRect(0, 0, canvas.width, canvas.height);
-      this.rArray.forEach(function (dot) {
-        dot.Draw()
-      })
-    },
-    Update: function () {
-      if (Event.rArray.length < 150) {
-        for (var x = Event.rArray.length; x < 150; x++) {
-          Event.rArray.push(new Dot())
+    Dot.prototype = {
+      Draw: function () {
+        cxt.fillStyle = this.color;
+        cxt.beginPath();
+        cxt.arc(this.x, this.y, this.diameter, 0, Math.PI * 2, false);
+        cxt.fill()
+      },
+      Update: function () {
+        if (this.alpha < 0.8) {
+          this.alpha += 0.01;
+          this.color = "rgba(" + this.ColorData.Red + ", " + this.ColorData.Green + "," + this.ColorData.Blue +
+            "," +
+            this.alpha + ")"
+        }
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        if (this.x > canvas.width + 5 || this.x < 0 - 5 || this.y > canvas.height + 5 || this.y < 0 - 5) {
+          this.alive = false
         }
       }
-      Event.rArray.forEach(function (dot) {
-        dot.Update()
-      });
-      Event.rArray = Event.rArray.filter(function (dot) {
-        return dot.alive
-      });
-      Event.Draw();
-      requestAnimationFrame(Event.Update)
-    }
-  };
-  window.onresize = function () {
-    Event.rArray = [];
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight
-  };
-  Event.Init();
+    };
+    var Event = {
+      rArray: [],
+      Init: function () {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        for (var x = 0; x < 150; x++) {
+          this.rArray.push(new Dot())
+        }
+        this.Update()
+      },
+      Draw: function () {
+        cxt.clearRect(0, 0, canvas.width, canvas.height);
+        this.rArray.forEach(function (dot) {
+          dot.Draw()
+        })
+      },
+      Update: function () {
+        if (Event.rArray.length < 150) {
+          for (var x = Event.rArray.length; x < 150; x++) {
+            Event.rArray.push(new Dot())
+          }
+        }
+        Event.rArray.forEach(function (dot) {
+          dot.Update()
+        });
+        Event.rArray = Event.rArray.filter(function (dot) {
+          return dot.alive
+        });
+        Event.Draw();
+        requestAnimationFrame(Event.Update)
+      }
+    };
+    window.onresize = function () {
+      Event.rArray = [];
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight
+    };
+    Event.Init();
+  })()
 </script>
 
 </html>
