@@ -10,6 +10,14 @@ const everyDay = new Vue({
   },
   created() {
     //请求数据，赋值
+    axios({
+      method: 'get',
+      url: '/queryEveryDay'
+    }).then(res => {
+      everyDay.content = res.data.data[0].content
+    }).catch( err => {
+      console.log('请求失败')
+    })
   }
 })
 
