@@ -110,10 +110,23 @@
 
   <script>
     function submit() {
-      alert('提交');
       var content = $("#editor").html();
-      var title = $("#title").html();
-      var text = $('#text').html();
+      var title = $("#title").val();
+      var tags = $('#tags').val();
+      const params = `title=${title}&tags=${tags}`;
+
+      $.ajax({
+        url: '/editBlog?' + params,
+        method: 'post',
+        data: content,
+        success: function(res) {
+          const result = JSON.parse(res);
+          $("#editor").html('');
+        },
+        error: function(err) {
+          console.log(err)
+        }
+      })
     }
   
   </script>

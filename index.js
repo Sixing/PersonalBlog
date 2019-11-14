@@ -11,6 +11,7 @@ app.use(express.static('./page/'));
 
 app.post('/editEveryDay', loader.get('/editEveryDay'));
 app.get('/queryEveryDay', loader.get('/queryEveryDay'));
+app.post('/editBlog', loader.get('/editBlog'));
 
 app.listen(globalConfig.port,() => {
   console.log("服务已启动, 端口:" + globalConfig.port);
