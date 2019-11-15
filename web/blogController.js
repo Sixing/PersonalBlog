@@ -6,6 +6,24 @@ const tagBlogMappingDao = require('../dao/tagBlogDaoMapping');
 const url = require('url');
 let path = new Map();
 
+function queryBlogByPage(req, res) {
+  const params = url.parse(req.url, true).query;
+  blogDao.queryBlogByPage(parseInt(params.page), parseInt(params.pageSize), result => {
+    result.forEach(item => {
+      
+      item.content = item.content.replace(/<img[\w\W]*">/g, "")
+      item.content = item.content.replace(/<[\w\W]*>/g, "");
+      item.content = item.content.substring(0, 300);
+      console.log(item.content)
+    })
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", '成功', result));
+    res.end();
+  })
+}
+
+
+
 function editBlog(req, res) {
   const params = url.parse(req.url, true).query;
   const tags = params.tags.replace(/ /g,"").replace("，", ",");
@@ -35,7 +53,7 @@ function queryTag(tag, blogId) {
       insertTag(tag, blogId)
     }else {
       tagBlogMappingDao.insertTagBlogMapping(result[0].id, blogId, timeUtil.getNow(), timeUtil.getNow(),() => {
-        
+
       })
     }
   })
@@ -60,7 +78,8 @@ function insertTagBlogMapping(tagId, blogId) {
   })
 }
 
-path.set("/editBlog", editBlog)
+path.set("/editBlog", editBlog);
+path.set('/queryBlogByPage', queryBlogByPage);
 
 module.exports = {
   path

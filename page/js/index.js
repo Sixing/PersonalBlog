@@ -51,11 +51,46 @@ const articleList = new Vue({
       tags: '母猪的产后护理 原子弹制造与维修',
       id: '3',
       link: ""
-    }]
+    }],
+    page: 1,
+    pageSize: 5,
+    count: 0
   },
   computed: {
 
   },created() {
+    
+  },
+  mounted(){
+    this.getPage(this.page, this.pageSize)
+  },
+  methods: {
+    getPage(page, pageSize) {
+      axios({
+        method: 'get',
+        url: '/queryBlogByPage?page=' + (page - 1) + "&pageSize=" + pageSize
+      }).then( res => {
+        const data = this.formatArticleData(res.data.data);
+        articleList.articleList = data;
 
-  }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    formatArticleData(data) {
+      const list = data.map( item => {
+        return {
+          title: item.title,
+          content: item.content,
+          date: item.ctime,
+          view: item.views,
+          tags: item.tags,
+          id: item.id,
+          link: "" + item.id
+        }
+      })
+      return list
+    }
+  },
+
 })
