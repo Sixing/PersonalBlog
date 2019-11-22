@@ -212,3 +212,30 @@ body {
   margin-top: 10px;
   color: #a2a2a2;
 }
+
+.page-tool {
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.page-tool > ul > li{
+  display: inline-block;
+  list-style: none;
+  width: 40px;
+  height: 30px;
+  background-color: white;
+  line-height: 30px;
+  text-align: center;
+  border: 1px solid #000;
+  float: left;
+  cursor: pointer;
+}
+
+.page-tool > ul > li:hover {
+  background-color: gray;
+}
+
+.now-page {
+  background-color: #333 !important;
+  color: #fff;
+}

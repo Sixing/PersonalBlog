@@ -53,8 +53,9 @@ const articleList = new Vue({
       link: ""
     }],
     page: 1,
-    pageSize: 5,
-    count: 0
+    pageSize: 3,
+    count: 0,
+    pageNumList: []
   },
   computed: {
 
@@ -72,10 +73,53 @@ const articleList = new Vue({
       }).then( res => {
         const data = this.formatArticleData(res.data.data);
         articleList.articleList = data;
-
+        this.page = page;
       }).catch(err => {
         console.log(err)
       })
+      axios({
+        method: 'get',
+        url: '/queryBlogCount'
+      }).then(res => {
+        console.log(res)
+        this.count = res.data.data.count;
+        this.generatePageTool();
+      })
+
+    },
+    generatePageTool() {
+      const pageNo = this.page;
+      const pageSize = this.pageSize;
+      const totalCount = this.count;
+      let result = [];
+      result.push({text: '<<', page: 1});
+      if(pageNo > 2) {
+        result.push({text: pageNo - 2, page: pageNo - 2});
+      }
+
+      if(pageNo > 1) {
+        result.push({text: pageNo - 1, page: pageNo - 1});
+      }
+
+      result.push({text: pageNo, page: pageNo});
+
+      if(pageNo + 1 <= (totalCount + pageSize - 1) / pageSize) {
+        result.push({text: pageNo + 1, page:pageNo + 1})
+      }
+
+      if(pageNo + 2 <= (totalCount + pageSize - 1) / pageSize) {
+        result.push({text: pageNo + 2, page:pageNo + 2})
+      }
+
+      result.push({text: '>>', page: parseInt((totalCount + pageSize - 1) / pageSize)});
+      this.pageNumList = result;
+      return result
+    },
+    jumpTo(page) {
+      // if(page <= 1) {
+      //   return
+      // }
+      this.getPage(page, this.pageSize);
     },
     formatArticleData(data) {
       const list = data.map( item => {
@@ -86,7 +130,7 @@ const articleList = new Vue({
           view: item.views,
           tags: item.tags,
           id: item.id,
-          link: "" + item.id
+          link: "/blog-detail.html?bid=" + item.id
         }
       })
       return list

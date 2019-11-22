@@ -14,7 +14,6 @@ function queryBlogByPage(req, res) {
       item.content = item.content.replace(/<img[\w\W]*">/g, "")
       item.content = item.content.replace(/<[\w\W]*>/g, "");
       item.content = item.content.substring(0, 300);
-      console.log(item.content)
     })
     res.writeHead(200);
     res.write(resUtil.writeResult("success", '成功', result));
@@ -22,7 +21,22 @@ function queryBlogByPage(req, res) {
   })
 }
 
+function queryBlogCount(req, res) {
+  blogDao.queryBlogCount(result => {
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", '成功', result[0]));
+    res.end();
+  })
+}
 
+function queryBlogById(req, res) {
+  const params = url.parse(req.url, true).query;
+  blogDao.queryBlogById(parseInt(params.bid), result => {
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", '成功', result[0]));
+    res.end();
+  })
+}
 
 function editBlog(req, res) {
   const params = url.parse(req.url, true).query;
@@ -80,6 +94,8 @@ function insertTagBlogMapping(tagId, blogId) {
 
 path.set("/editBlog", editBlog);
 path.set('/queryBlogByPage', queryBlogByPage);
+path.set('/queryBlogCount', queryBlogCount);
+path.set('/queryBlogById', queryBlogById);
 
 module.exports = {
   path

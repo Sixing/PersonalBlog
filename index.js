@@ -13,6 +13,10 @@ app.post('/editEveryDay', loader.get('/editEveryDay'));
 app.get('/queryEveryDay', loader.get('/queryEveryDay'));
 app.post('/editBlog', loader.get('/editBlog'));
 app.get('/queryBlogByPage', loader.get('/queryBlogByPage'))
+app.get('/queryBlogCount', loader.get('/queryBlogCount'))
+app.get('/queryBlogById', loader.get('/queryBlogById'))
+app.get('/addComment', loader.get('/addComment'))
+app.get('/queryRandomCode', loader.get('/queryRandomCode'))
 
 app.listen(globalConfig.port,() => {
   console.log("服务已启动, 端口:" + globalConfig.port);

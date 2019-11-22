@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>个人博客</title>
   <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="./css/blog-detail.css">
+  <title>个人博客</title>
 </head>
 
 <body>
@@ -29,27 +29,33 @@
   </header>
   <section class="content">
     <div class="content-left">
-      <div id="every-day" class="every-day">
-        <span>每日一句</span>
-        <p v-html="getContent"></p>
+      <div id="blog-detail" class="blog">
+        <div class="blog-title">{{title}}</div>
+        <div class="blog-msg">作者: 乱马 标签{{tags}} 发布于: {{ctime}} 浏览<{{views}}></div>
+        <div class="blog-content" v-html="content"></div>
       </div>
-      <div id="article-list" class="article-list">
-        <div class="article" v-for="article in articleList" :key="article.id">
-          <a v-bind:href="article.link" class="article-title">{{article.title}}</a>
-          <p class="article-content" data-tag="aaaa">{{article.content}}</p>
-          <div class="article-footer">发布于{{article.date}} | 浏览 ({{article.view}}) | Tags: {{article.tags}}</div>
+      <div class="send-comments" id="comments">
+        <span>发表评论</span>
+        <div>
+          <input type="hidden" id="comment-reply" value="-1">
+          <input type="text"  placeholder="昵称" id="comment-name">
+          <input type="text" placeholder="邮箱(评论被回复时你能收到通知)" id="comment-email">
         </div>
-        <div class="page-tool">
-          <ul>
-            <li v-for="(item, index) in pageNumList" :key="index" :class="{'now-page':(item.text == page)}" @click="jumpTo(item.page)" >{{item.text}}</li>
-          </ul>
+        <div>
+          <textarea placeholder="无意义的内容我可能不会回复你" name="" id="comment-content" cols="30" rows="10"></textarea>
         </div>
+        <div>
+          <input type="text" placeholder="验证码" id="comment-code">
+          <span v-html="vcode" @click="getCaptcha"></span>
+        </div>
+        <button @click="sendComment">提交评论</button>
       </div>
     </div>
     <div class="content-right">
       <div id="random_tags" class="right_module">
         <div class="">随机标签云</div>
-        <a href="#" v-bind:style="{color:randomColor() , fontSize:randomSize()}" v-for="(tag, index) in tags" :key="index">{{tag}}</a>
+        <a href="#" v-bind:style="{color:randomColor() , fontSize:randomSize()}" v-for="(tag, index) in tags"
+          :key="index">{{tag}}</a>
       </div>
       <div class="right_module" id="new-hot">
         <div class="">最近热门</div>
@@ -96,10 +102,11 @@
     </ul>
     <p>Copyright © 2019</p>
   </footer>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script src='./js/axios.js'></script>
+  <script src="./js/blog-detail.js"></script>
+  <script src="./js/base.js"></script>
+  <script src="./js/background.js"></script>
 </body>
-<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
-<script src='./js/axios.js'></script>
-<script src="./js/index.js"></script>
-<script src="./js/base.js"></script>
-<script src="./js/background.js"></script>
+
 </html>
