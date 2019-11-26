@@ -1,7 +1,7 @@
 const everyDay = new Vue({
   el: '#every-day',
   data: {
-    content: "asdafsdfasdfasdf"
+    content: ""
   },
   computed: {
     getContent: function() {
@@ -67,9 +67,20 @@ const articleList = new Vue({
   },
   methods: {
     getPage(page, pageSize) {
+      const tag = this.getUrlParams();
+      let queryUrl = ''
+      let countUrl = ''
+      if(tag != '') {
+        queryUrl = '/queryByTag?tag=' + tag + '&page=' + (page - 1) + "&pageSize=" + pageSize;
+        countUrl = '/queryByTagCount?tag=' + tag;
+      }else {
+        queryUrl = '/queryBlogByPage?page=' + (page - 1) + "&pageSize=" + pageSize
+        countUrl = '/queryBlogCount'
+      }
+
       axios({
         method: 'get',
-        url: '/queryBlogByPage?page=' + (page - 1) + "&pageSize=" + pageSize
+        url: queryUrl
       }).then( res => {
         const data = this.formatArticleData(res.data.data);
         articleList.articleList = data;
@@ -77,15 +88,33 @@ const articleList = new Vue({
       }).catch(err => {
         console.log(err)
       })
+
       axios({
         method: 'get',
-        url: '/queryBlogCount'
+        url: countUrl
       }).then(res => {
         console.log(res)
         this.count = res.data.data.count;
         this.generatePageTool();
       })
-
+    },
+    getUrlParams() {
+      const searchUrlParam = location.search.indexOf('?') -1 ? location.search.split('?')[1].split("&"): '';
+      let tag = '';
+      if(searchUrlParam == '') {
+        return;
+      }else {
+        searchUrlParam.forEach(item => {
+          if(item.split('=')[0] == 'tag') {
+            try {
+              tag = item.split('=')[1];
+            }catch(e) {
+              console.log(e);
+            }
+          }
+        })
+      }
+      return tag;
     },
     generatePageTool() {
       const pageNo = this.page;
@@ -122,16 +151,20 @@ const articleList = new Vue({
       this.getPage(page, this.pageSize);
     },
     formatArticleData(data) {
-      const list = data.map( item => {
-        return {
-          title: item.title,
-          content: item.content,
-          date: item.ctime,
-          view: item.views,
-          tags: item.tags,
-          id: item.id,
-          link: "/blog-detail.html?bid=" + item.id
+      const list = [];
+      data.forEach( item => {
+        if(item) {
+          list.push({
+            title: item.title,
+            content: item.content,
+            date: moment(item.ctime).format("YYYY-MM-DD HH:mm:ss"),
+            view: item.views,
+            tags: item.tags,
+            id: item.id,
+            link: "/blog-detail.html?bid=" + item.id
+          })
         }
+
       })
       return list
     }

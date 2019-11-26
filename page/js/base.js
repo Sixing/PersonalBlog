@@ -1,7 +1,7 @@
 const randomTags = new Vue({
   el: '#random_tags',
   data: {
-    tags: ['javascript', 'Vue', "React", 'HTML5']
+    tags: []
   },
   computed: {
     randomColor() {
@@ -19,45 +19,74 @@ const randomTags = new Vue({
       }
     }
   },
-  created() {
-
+  mounted() {
+    this.getTags()
+  },
+  methods: {
+    getTags() {
+      axios({
+        method: 'get',
+        url: '/queryRandomTags'
+      }).then(res => {
+        this.tags = res.data.data.map( item => {
+          return {
+            text: item.tag,
+            link: '/?tag=' + item.tag
+          }
+        })
+      })
+    }
   }
+
 })
 
 const newHot = new Vue({
   el: '#new-hot',
   data: {
-    titleList: [
-      {
-        title: '这是一个链接',
-        link: " http://www.baidu.com"
-      },
-      {
-        title: '这是一个链接',
-        link: " http://www.baidu.com"
-      },      {
-        title: '这是一个链接',
-        link: " http://www.baidu.com"
-      }
-    ]
+    titleList: []
+  },
+  mounted() {
+    this.queryBlogByHot()
+  },
+  methods: {
+    queryBlogByHot(){
+      axios({
+        method: 'get',
+        url: '/queryBlogByHot?size=5'
+      }).then(res => {
+        this.titleList = res.data.data.map(item => {
+          return {
+            title: item.title,
+            link: "/blog-detail.html?bid=" + item.id
+          }
+        });
+      })
+    }
   }
 })
 
 const newComment = new Vue({
   el: '#new-comment',
   data: {
-    commentList: [{
-      name: '这是用户名',
-      date: '2019-11-13',
-      comment: '这里是一大串评论'
-    },{
-      name: '这是用户名',
-      date: '2019-11-13',
-      comment: '这里是一大串评论'
-    },{
-      name: '这是用户名',
-      date: '2019-11-13',
-      comment: '这里是一大串评论'
-    }]
+    commentList: []
+  },
+  mounted() {
+    this.queryNewComments()
+  },
+  methods: {
+    queryNewComments() {
+      axios({
+        method: 'get',
+        url: '/queryNewComments?size=5'
+      }).then(res => {
+        this.commentList = res.data.data.map(item => {
+          return {
+            name: item.user_name,
+            date: moment(item.ctime).format('YYYY-MM-DD HH:mm:ss'),
+            comment: item.comment
+          }
+        })
+      })
+    }
   }
 })

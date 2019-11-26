@@ -78,10 +78,58 @@ function queryBlog(success) {
   connection.end();
 }
 
+function queryAllBlog(success) {
+  const querySql = "select * from blog order by id desc;";
+
+  const connection = dbUtil.createConnect();
+  connection.connect();
+  connection.query(querySql, [] ,(err, result) => {
+    if(result) {
+      success(result)
+    }else {
+      console.log(err)
+    }
+  })
+  connection.end();
+}
+
+function addViews(id, success) {
+  const querySql = "update blog set views = views + 1 where id = ?;";
+
+  const connection = dbUtil.createConnect();
+  connection.connect();
+  connection.query(querySql, [id] ,(err, result) => {
+    if(result) {
+      success(result)
+    }else {
+      console.log(err)
+    }
+  })
+  connection.end();
+}
+
+function queryHot(size, success) {
+  const querySql = "select * from blog order by views desc limit ?;";
+
+  const connection = dbUtil.createConnect();
+  connection.connect();
+  connection.query(querySql, [size] ,(err, result) => {
+    if(result) {
+      success(result)
+    }else {
+      console.log(err)
+    }
+  })
+  connection.end();
+}
+
 module.exports = {
   insertBlog,
   queryBlog,
   queryBlogByPage,
   queryBlogCount,
-  queryBlogById
+  queryBlogById,
+  queryAllBlog,
+  addViews,
+  queryHot
 }

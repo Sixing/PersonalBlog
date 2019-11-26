@@ -31,7 +31,24 @@ function queryTag(tag, success) {
   connection.end();
 }
 
+function queryAllTag(success) {
+  const querySql = "select * from tags;";
+  const connection = dbUtil.createConnect();
+  connection.connect();
+  connection.query(querySql, [], (err, result) => {
+    if(result) {
+      success(result)
+    }else {
+      console.log(err)
+    }
+  })
+  connection.end();
+}
+
+
+
 module.exports = {
   insertTag,
-  queryTag
+  queryTag,
+  queryAllTag
 }

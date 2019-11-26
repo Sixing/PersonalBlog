@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,19 +8,24 @@
   <link rel="stylesheet" href="./css/sitemap.css">
   <title>个人博客</title>
 </head>
+
 <body>
   <div class="title">个人博客's SiteMap</div>
   <div class="link"><a href="#"><b>博客首页</b></a> >> 站点地图</div>
-  <div class="blog-list">
+  <div class="blog-list" id="blog-list">
     <span>最新文章</span>
     <ul>
+      <li v-for="blog in blogList" :key="blog.id"><a :href="blog.link">{{blog.title}}</a></li>
+      <!-- <li><a href="#">母猪的产后护理第一节</a></li>
       <li><a href="#">母猪的产后护理第一节</a></li>
       <li><a href="#">母猪的产后护理第一节</a></li>
       <li><a href="#">母猪的产后护理第一节</a></li>
-      <li><a href="#">母猪的产后护理第一节</a></li>
-      <li><a href="#">母猪的产后护理第一节</a></li>
-      <li><a href="#">母猪的产后护理第一节</a></li>
+      <li><a href="#">母猪的产后护理第一节</a></li> -->
     </ul>
   </div>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script src='./js/axios.js'></script>
+  <script src="./js/sitemap.js"></script>
 </body>
+
 </html>

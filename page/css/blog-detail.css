@@ -73,3 +73,38 @@
   background-color: #adadad;
   cursor: pointer;
 }
+
+.blog-comments {
+  width: 100%;
+}
+
+.blog-comment-msg {
+  margin-top: 20px;
+  padding: 10px;
+  display: inline-block;
+  width: 100%;
+  text-align: left;
+}
+
+.blog-comment {
+  width: 95%;
+  background-color: #d9edf7;
+  border: 1px dashed #7ca4c1;
+  padding: 10px 10px 20px 10px;
+  margin-top: 10px;
+  color: #31708f;
+  text-align: left;
+}
+
+.blog-comment span {
+  display: inline-block;
+  width: 100%;
+  padding-left: 10px;
+}
+
+.blog-comment div {
+  display: inline-block;
+  width: 100%;
+  padding-left: 10px;
+  margin-top: 10px;
+}

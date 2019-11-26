@@ -8,7 +8,7 @@ let path = new Map();
 
 function addComment(req, res) {
   const params = url.parse(req.url, true).query;
-  commentDao.insertComment(parseInt(params.bid), parseInt(params.parent), params.userName, params.email, params.content, timeUtil.getNow(), timeUtil.getNow(),result => {
+  commentDao.insertComment(parseInt(params.bid), parseInt(params.parent), params.parentName, params.userName, params.email, params.content, timeUtil.getNow(), timeUtil.getNow(),result => {
     res.writeHead(200);
     res.write(resUtil.writeResult("success", '评论成功', result));
     res.end();
@@ -26,9 +26,39 @@ function queryRandomCode(req, res) {
   res.end();
 }
 
+function queryCommentsByBlogId(req, res) {
+  const params = url.parse(req.url, true).query;
+  commentDao.queryCommentsByBlogId(parseInt(params.bid), result => {
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", '成功', result));
+    res.end();
+  })
+}
+
+function queryCommentsCountByBlogId(req, res) {
+  const params = url.parse(req.url, true).query;
+  commentDao.queryCommentsCountByBlogId(parseInt(params.bid), result => {
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", '成功', result));
+    res.end();
+  })
+}
+
+function queryNewComments(req, res) {
+  const params = url.parse(req.url, true).query;
+  commentDao.queryNewComments(parseInt(params.size), result => {
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", '成功', result));
+    res.end();
+  })
+}
+
 
 path.set('/addComment', addComment);
-path.set('/queryRandomCode', queryRandomCode)
+path.set('/queryRandomCode', queryRandomCode);
+path.set('/queryCommentsByBlogId', queryCommentsByBlogId);
+path.set('/queryCommentsCountByBlogId', queryCommentsCountByBlogId);
+path.set('/queryNewComments', queryNewComments)
 
 module.exports = {
   path

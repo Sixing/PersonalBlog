@@ -35,6 +35,8 @@ function queryBlogById(req, res) {
     res.writeHead(200);
     res.write(resUtil.writeResult("success", '成功', result[0]));
     res.end();
+    blogDao.addViews(parseInt(params.bid), result => {
+    })
   })
 }
 
@@ -92,10 +94,29 @@ function insertTagBlogMapping(tagId, blogId) {
   })
 }
 
+function queryAllBlog(req, res) {
+  blogDao.queryAllBlog(result => {
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", "成功", result));
+    res.end();
+  })
+}
+
+function queryBlogByHot(req, res) {
+  const params = url.parse(req.url, true).query
+  blogDao.queryHot(parseInt(params.size), result => {
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", "成功", result));
+    res.end();
+  })
+}
+
 path.set("/editBlog", editBlog);
 path.set('/queryBlogByPage', queryBlogByPage);
 path.set('/queryBlogCount', queryBlogCount);
 path.set('/queryBlogById', queryBlogById);
+path.set('/queryAllBlog', queryAllBlog);
+path.set('/queryBlogByHot', queryBlogByHot)
 
 module.exports = {
   path
