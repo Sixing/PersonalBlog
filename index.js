@@ -25,6 +25,7 @@ app.get('/queryBlogByHot', loader.get('/queryBlogByHot'))
 app.get('/queryNewComments', loader.get('/queryNewComments'))
 app.get('/queryByTag', loader.get('/queryByTag'))
 app.get('/queryByTagCount', loader.get('/queryByTagCount'))
+app.get('/queryBlogBySearch', loader.get('/queryBlogBySearch'))
 
 app.listen(globalConfig.port,() => {
   console.log("服务已启动, 端口:" + globalConfig.port);

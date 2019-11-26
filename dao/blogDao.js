@@ -93,6 +93,21 @@ function queryAllBlog(success) {
   connection.end();
 }
 
+function queryBlogBySearch(keyword, success) {
+  const querySql = " select * from blog where title like ?;"
+  const params = '%' + keyword + '%';
+  const connection = dbUtil.createConnect();
+  connection.connect();
+  connection.query(querySql, [params], (err, result) => {
+    if(result) {
+      success(result)
+    }else {
+      console.log(err)
+    }
+  })
+  connection.end();
+}
+
 function addViews(id, success) {
   const querySql = "update blog set views = views + 1 where id = ?;";
 
@@ -131,5 +146,6 @@ module.exports = {
   queryBlogById,
   queryAllBlog,
   addViews,
-  queryHot
+  queryHot,
+  queryBlogBySearch
 }

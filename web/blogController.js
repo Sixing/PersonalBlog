@@ -40,6 +40,15 @@ function queryBlogById(req, res) {
   })
 }
 
+function queryBlogBySearch(req, res) {
+  const params = url.parse(req.url, true).query;
+  blogDao.queryBlogBySearch(params.keyword, result => {
+    res.writeHead(200);
+    res.write(resUtil.writeResult("success", '成功', result[0]));
+    res.end();
+  })
+}
+
 function editBlog(req, res) {
   const params = url.parse(req.url, true).query;
   const tags = params.tags.replace(/ /g,"").replace("，", ",");
@@ -116,7 +125,8 @@ path.set('/queryBlogByPage', queryBlogByPage);
 path.set('/queryBlogCount', queryBlogCount);
 path.set('/queryBlogById', queryBlogById);
 path.set('/queryAllBlog', queryAllBlog);
-path.set('/queryBlogByHot', queryBlogByHot)
+path.set('/queryBlogByHot', queryBlogByHot);
+path.set('/queryBlogBySearch', queryBlogBySearch)
 
 module.exports = {
   path

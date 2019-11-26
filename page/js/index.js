@@ -171,3 +171,22 @@ const articleList = new Vue({
   },
 
 })
+
+const search = new Vue({
+  el: '#search-bar',
+  data: {
+
+  },
+  mounted() {
+
+  },
+  methods: {
+    handleSearch() {
+      const keyword = document.getElementById('search-text').value;
+      axios({
+        method: 'get',
+        url: '/queryBlogBySearch?keyword=' + keyword
+      })
+    }
+  }
+})
